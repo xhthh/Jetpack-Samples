@@ -1,8 +1,8 @@
 package com.xht.jetpack.databinding
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -25,6 +25,10 @@ class DbTestActivity : AppCompatActivity() {
 
         binding.setVariable(BR.title, "DataBindingTest")
         binding.viewModel = TestModule()
+
+        binding.btnLiveData.setOnClickListener {
+            startActivity(Intent(this, ViewModelActivity::class.java))
+        }
     }
 
     //todo 在activity 中写的点击事件在布局中调不了，为啥？

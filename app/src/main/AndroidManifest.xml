@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".databinding.DbTestActivity" />
+        <activity android:name=".databinding.ViewModelActivity" />
     </application>
 
 </manifest>
