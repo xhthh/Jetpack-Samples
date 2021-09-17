@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data class="CustomBinding">
+
+        <variable
+            name="user"
+            type="com.xht.jetpack.databinding.User" />
+
+        <variable
+            name="activity"
+            type="com.xht.jetpack.databinding.DbTestActivity" />
+
+        <variable
+            name="title"
+            type="String" />
+
+        <import
+            alias="testModel"
+            type="com.xht.jetpack.databinding.TestModule" />
+
+        <variable
+            name="viewModel"
+            type="testModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/et_test"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/tvName"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+        <!--
+            使用其他控件的值
+            android:text="@{etTest.text}"
+        -->
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:enabled="true"
+            android:focusable="true"
+            android:onClick="@{view->activity.onClick(view)}"
+            android:text="@{user.name}"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@{title}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/tvModel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:onClick="@{view->viewModel.onClick(view)}"
+            android:text="@{viewModel.text}"
+            android:textSize="20sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvName" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
