@@ -1,4 +1,4 @@
-package com.xht.jetpack.databinding
+package com.xht.jetpack.databinding.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.xht.jetpack.BR
 import com.xht.jetpack.R
+import com.xht.jetpack.databinding.CustomBinding
+import com.xht.jetpack.databinding.bean.User
+import com.xht.jetpack.databinding.data.TestModule
 
 /**
  * DataBinding 使用
@@ -28,6 +31,10 @@ class DbTestActivity : AppCompatActivity() {
 
         binding.btnLiveData.setOnClickListener {
             startActivity(Intent(this, ViewModelActivity::class.java))
+        }
+
+        binding.btnObservable.setOnClickListener {
+            startActivity(Intent(this, ObservableFieldActivity::class.java))
         }
     }
 

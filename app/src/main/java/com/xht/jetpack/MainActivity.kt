@@ -3,7 +3,7 @@ package com.xht.jetpack
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.xht.jetpack.databinding.DbTestActivity
+import com.xht.jetpack.databinding.ui.DbTestActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {

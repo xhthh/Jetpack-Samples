@@ -18,8 +18,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".databinding.DbTestActivity" />
-        <activity android:name=".databinding.ViewModelActivity" />
+        <activity android:name=".databinding.ui.DbTestActivity" />
+        <activity android:name=".databinding.ui.ViewModelActivity" />
+        <activity android:name=".databinding.ui.ObservableFieldActivity" />
     </application>
 
 </manifest>

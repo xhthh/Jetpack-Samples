@@ -1,4 +1,4 @@
-package com.xht.jetpack.databinding
+package com.xht.jetpack.databinding.data
 
 import android.view.View
 import android.widget.Toast

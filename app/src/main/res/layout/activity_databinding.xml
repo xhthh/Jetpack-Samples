@@ -6,11 +6,11 @@
 
         <variable
             name="user"
-            type="com.xht.jetpack.databinding.User" />
+            type="com.xht.jetpack.databinding.bean.User" />
 
         <variable
             name="activity"
-            type="com.xht.jetpack.databinding.DbTestActivity" />
+            type="com.xht.jetpack.databinding.ui.DbTestActivity" />
 
         <variable
             name="title"
@@ -18,7 +18,7 @@
 
         <import
             alias="testModel"
-            type="com.xht.jetpack.databinding.TestModule" />
+            type="com.xht.jetpack.databinding.data.TestModule" />
 
         <variable
             name="viewModel"
