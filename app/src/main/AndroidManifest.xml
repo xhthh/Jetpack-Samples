@@ -21,6 +21,7 @@
         <activity android:name=".databinding.ui.DbTestActivity" />
         <activity android:name=".databinding.ui.ViewModelActivity" />
         <activity android:name=".databinding.ui.ObservableFieldActivity" />
+        <activity android:name=".databinding.ui.ViewBindingActivity" />
     </application>
 
 </manifest>

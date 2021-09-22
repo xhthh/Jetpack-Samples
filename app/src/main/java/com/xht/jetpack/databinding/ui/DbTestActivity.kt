@@ -36,6 +36,10 @@ class DbTestActivity : AppCompatActivity() {
         binding.btnObservable.setOnClickListener {
             startActivity(Intent(this, ObservableFieldActivity::class.java))
         }
+
+        binding.btnViewBinding.setOnClickListener {
+            startActivity(Intent(this, ViewBindingActivity::class.java))
+        }
     }
 
     //todo 在activity 中写的点击事件在布局中调不了，为啥？
