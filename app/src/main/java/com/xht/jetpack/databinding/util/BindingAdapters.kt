@@ -23,10 +23,38 @@ object BindingAdapters {
         view.setImageDrawable(getDrawablePopularity(popularity, view.context))
     }
 
+    @BindingAdapter(value = ["imageUrl", "placeholder"], requireAll = false)
+    fun setImageUrl(imageView: ImageView, url: String?, placeHolder: Drawable?) {
+        if (url == null) {
+            imageView.setImageDrawable(placeHolder);
+        } else {
+
+        }
+    }
+
+
+    @BindingAdapter("android:onLayoutChange")
+    fun setOnLayoutChangeListener(
+        view: View,
+        oldValue: View.OnLayoutChangeListener?,
+        newValue: View.OnLayoutChangeListener?
+    ) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            if (oldValue != null) {
+                view.removeOnLayoutChangeListener(oldValue)
+            }
+            if (newValue != null) {
+                view.addOnLayoutChangeListener(newValue)
+            }
+        }
+    }
+
+
     private fun getAssociatedColor(popularity: Popularity, context: Context): Int {
         return when (popularity) {
             Popularity.NORMAL -> context.theme.obtainStyledAttributes(
-                intArrayOf(android.R.attr.colorForeground)).getColor(0, 0x000000)
+                intArrayOf(android.R.attr.colorForeground)
+            ).getColor(0, 0x000000)
             Popularity.POPULAR -> ContextCompat.getColor(context, R.color.popular)
             Popularity.STAR -> ContextCompat.getColor(context, R.color.star)
         }

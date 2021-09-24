@@ -1,8 +1,11 @@
 ### JetPack 组件使用笔记
+https://juejin.cn/post/6955491901265051661#heading-16
 
 #### 一、DataBinding
 
 https://juejin.cn/post/6980585971188236295
+
+https://www.jianshu.com/p/e8b6ba90de53
 
 ##### 1、gradle 配置
 

@@ -6,9 +6,12 @@
 
     <data>
 
+<!--        <variable-->
+<!--            name="viewmodel"-->
+<!--            type="com.xht.jetpack.databinding.data.ProfileLiveDataViewModel" />-->
         <variable
             name="viewmodel"
-            type="com.xht.jetpack.databinding.data.ProfileLiveDataViewModel" />
+            type="com.xht.jetpack.databinding.data.ProfileObservableViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

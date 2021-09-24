@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.xht.jetpack.R
 import com.xht.jetpack.databinding.ActivityViewModelBinding
 import com.xht.jetpack.databinding.data.ProfileLiveDataViewModel
+import com.xht.jetpack.databinding.data.ProfileObservableViewModel
 
 class ViewModelActivity : AppCompatActivity() {
 
@@ -19,10 +20,17 @@ class ViewModelActivity : AppCompatActivity() {
         val viewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
             .create(ProfileLiveDataViewModel::class.java)
 
-        val binding = DataBindingUtil.setContentView<ActivityViewModelBinding>(this,
-            R.layout.activity_view_model)
+        //ViewModel 获取方式
+        val observableViewModel: ProfileObservableViewModel =
+            ViewModelProvider(this).get(ProfileObservableViewModel::class.java)
 
-        binding.viewmodel = viewModel
+        val binding = DataBindingUtil.setContentView<ActivityViewModelBinding>(
+            this,
+            R.layout.activity_view_model
+        )
+
+        //binding.viewmodel = viewModel
+        binding.viewmodel = observableViewModel
         binding.lifecycleOwner = this
     }
 

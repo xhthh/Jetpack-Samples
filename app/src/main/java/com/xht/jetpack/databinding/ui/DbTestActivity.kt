@@ -20,8 +20,10 @@ class DbTestActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //所传泛型参数即由布局生成的绑定类，类名为：下划线语法变程驼峰语法+Binding
-        val binding = DataBindingUtil.setContentView<CustomBinding>(this,
-            R.layout.activity_databinding)
+        val binding = DataBindingUtil.setContentView<CustomBinding>(
+            this,
+            R.layout.activity_databinding
+        )
         binding.user = User("xht", 18)
         //另一种设置方式，报错找不到 BR，在 build.gradle 中引入 kotlin-kapt
         //binding.setVariable(BR.user, User("Jack", 23))
@@ -40,6 +42,11 @@ class DbTestActivity : AppCompatActivity() {
         binding.btnViewBinding.setOnClickListener {
             startActivity(Intent(this, ViewBindingActivity::class.java))
         }
+        binding.btnTwoWay.setOnClickListener {
+            startActivity(Intent(this, TwoWayBindingActivity::class.java))
+        }
+
+
     }
 
     //todo 在activity 中写的点击事件在布局中调不了，为啥？
