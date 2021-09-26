@@ -24,6 +24,13 @@
                 android:text="dataBinding &amp; viewBinding"
                 android:textAllCaps="false" />
 
+            <Button
+                android:id="@+id/btnLifeCycle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="LifeCycle"
+                android:textAllCaps="false" />
+
         </LinearLayout>
     </ScrollView>
 
