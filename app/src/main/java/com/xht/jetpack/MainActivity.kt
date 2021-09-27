@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.xht.jetpack.databinding.ui.DbTestActivity
 import com.xht.jetpack.lifecycle.LCTestActivity
+import com.xht.jetpack.viewmodule.VMTestActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -20,6 +21,16 @@ class MainActivity : AppCompatActivity() {
         //LifeCycle
         btnLifeCycle.setOnClickListener {
             skip2Activity(LCTestActivity::class.java)
+        }
+
+        //LiveData
+        btnLiveData.setOnClickListener {
+            skip2Activity(VMTestActivity::class.java)
+        }
+
+        //ViewModel
+        btnViewModel.setOnClickListener {
+            skip2Activity(VMTestActivity::class.java)
         }
     }
 

@@ -14,6 +14,7 @@ import com.xht.jetpack.databinding.data.TestModule
 
 /**
  * DataBinding 使用
+ * 很难定位语法的错误和运行时的崩溃原因
  */
 class DbTestActivity : AppCompatActivity() {
 
