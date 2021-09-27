@@ -63,7 +63,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
             app:layout_constraintVertical_chainStyle="packed"
-            app:popularityIcon="@{viewmodel.popularity}" />
+            popularityIcon="@{viewmodel.popularity}" />
 
         <!-- Conversions like Integer to String are expressions simple enough for the layout. An
         alternative would be to create a getter in the ViewModel to expose likes as Strings. -->

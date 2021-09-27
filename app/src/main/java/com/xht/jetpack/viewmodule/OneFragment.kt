@@ -28,6 +28,10 @@ class OneFragment : Fragment() {
 
         val model: SharedViewModel =
             ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+//        val model: SharedViewModel = ViewModelProvider(
+//            requireActivity(),
+//            SharedViewModel.SharedViewModelFactory("")
+//        ).get(SharedViewModel::class.java)
         bt_fragment_one.setOnClickListener {
             model.sharedName.value = "星矢"
         }

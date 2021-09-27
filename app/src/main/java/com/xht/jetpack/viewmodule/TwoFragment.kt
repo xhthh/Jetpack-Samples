@@ -27,7 +27,10 @@ class TwoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val model: SharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+        val model: SharedViewModel = ViewModelProvider(
+            requireActivity(),
+            SharedViewModel.SharedViewModelFactory("纱织")
+        ).get(SharedViewModel::class.java)
         model.sharedName.observe(viewLifecycleOwner, Observer {
             tv.text = it
         })
