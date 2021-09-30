@@ -4,13 +4,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class SharedViewModel(sharedName: String) : ViewModel() {
+class SharedViewModel() : ViewModel() {
+
+    constructor(sharedName: String) : this() {
+        this.sharedName.value = sharedName
+
+    }
 
     var sharedName: MutableLiveData<String> = MutableLiveData()
 
-    init {
-        this.sharedName.value = sharedName
-    }
 
     class SharedViewModelFactory(private val sharedName: String) :
         ViewModelProvider.Factory {

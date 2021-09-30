@@ -34,12 +34,24 @@ class TwoFragment : Fragment() {
         model.sharedName.observe(viewLifecycleOwner, Observer {
             tv.text = it
         })
+
+        setFragmentResultListener("requestKey") { requestKey, bundle ->
+            val result = bundle.getString("bundleKey")
+            Log.e("Fragment", "返回的result：$result")
+        }
     }
 
     override fun onDestroy() {
         Toast.makeText(activity, "TwoFragment is destroyed", Toast.LENGTH_SHORT).show()
         Log.e("ViewModel", "TwoFragment---onDestroy")
         super.onDestroy()
+    }
+
+    private fun Fragment.setFragmentResultListener(
+        requestKey: String,
+        listener: ((requestKey: String, bundle: Bundle) -> Unit)
+    ) {
+        parentFragmentManager.setFragmentResultListener(requestKey, this, listener)
     }
 
 }
