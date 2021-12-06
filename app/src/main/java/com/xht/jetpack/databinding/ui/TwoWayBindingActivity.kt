@@ -9,8 +9,8 @@ class TwoWayBindingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val binding = ActivityTwoWayBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+//        val binding = ActivityTwoWayBinding.inflate(layoutInflater)
+//        setContentView(binding.root)
 
     }
 

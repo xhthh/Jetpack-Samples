@@ -26,6 +26,7 @@
         <activity android:name=".lifecycle.LCTestActivity" />
         <activity android:name=".livedata.LDTestActivity" />
         <activity android:name=".viewmodule.VMTestActivity" />
+        <activity android:name=".databinding.ui.UserListActivity" />
     </application>
 
 </manifest>

@@ -44,9 +44,12 @@ class DbTestActivity : AppCompatActivity() {
             startActivity(Intent(this, ViewBindingActivity::class.java))
         }
         binding.btnTwoWay.setOnClickListener {
-            startActivity(Intent(this, TwoWayBindingActivity::class.java))
+//            startActivity(Intent(this, TwoWayBindingActivity::class.java))
         }
 
+        binding.btnListTest.setOnClickListener {
+            startActivity(Intent(this, UserListActivity::class.java))
+        }
 
     }
 
