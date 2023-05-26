@@ -3,6 +3,7 @@ package com.xht.jetpack
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.xht.jetpack.coroutine.CoroutineTestActivity
 import com.xht.jetpack.databinding.ui.DbTestActivity
 import com.xht.jetpack.lifecycle.LCTestActivity
 import com.xht.jetpack.livedata.LDTestActivity
@@ -32,6 +33,11 @@ class MainActivity : AppCompatActivity() {
         //ViewModel
         btnViewModel.setOnClickListener {
             skip2Activity(VMTestActivity::class.java)
+        }
+
+        //Coroutine协程
+        btnCoroutine.setOnClickListener {
+            skip2Activity(CoroutineTestActivity::class.java)
         }
     }
 

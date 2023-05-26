@@ -28,6 +28,7 @@
         <activity android:name=".livedata.LDTestActivity" />
         <activity android:name=".viewmodule.VMTestActivity" />
         <activity android:name=".databinding.ui.UserListActivity" />
+        <activity android:name=".coroutine.CoroutineTestActivity" />
     </application>
 
 </manifest>
