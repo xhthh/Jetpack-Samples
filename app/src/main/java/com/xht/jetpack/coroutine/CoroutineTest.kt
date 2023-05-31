@@ -1,6 +1,24 @@
 package com.xht.jetpack.coroutine
 
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.async
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.newSingleThreadContext
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.supervisorScope
+import kotlinx.coroutines.withContext
 import kotlin.system.measureTimeMillis
 
 fun main() {
@@ -10,20 +28,296 @@ fun main() {
     //test4()
     //test5()
     //test6()
-    test7()
+    //test7()
+//    runBlocking {
+//        val fetchTwoDocs = fetchTwoDocs()
+//        log(fetchTwoDocs)
+//    }
+    //test8()
+    //test9()
+    //test10()
+    //test11()
+    //test12()
+    //test13()
+    //test14()
+    //test15()
+    test16()
+
 }
 
+/**
+ * 一般情况下，协程的取消操作会通过协程的层次结构来进行传播：
+ *          如果取消父协程或者父协程抛出异常，那么子协程都会被取消；
+ *          而如果子协程被取消，则不会影响同级协程和父协程，但如果子协程抛出异常则也会导致同级协程和父协程被取消
+ */
+fun test16() {
+    runBlocking {
+        val request = launch {
+            val job1 = launch {
+                repeat(10) {
+                    delay(300)
+                    log("job1: $it")
+                    if (it == 2) {
+                        log("job1 canceled")
+                        cancel()
+                    }
+                }
+            }
+            val job2 = launch {
+                repeat(10) {
+                    delay(300)
+                    log("job2: $it")
+                }
+            }
+        }
+        delay(1600)
+        log("parent job canceled")
+        request.cancel()
+        delay(1000)
+    }
+}
+
+/**
+ * 当一个协程在另外一个协程的协程作用域中启动时，它将通过 CoroutineScope.coroutineContext 继承其上下文，
+ * 新启动的协程就被称为子协程，子协程的 Job 将成为父协程 Job 的子 Job。父协程总是会等待其所有子协程都完成后才结束自身，
+ * 所以父协程不必显式跟踪它启动的所有子协程，也不必使用 Job.join 在末尾等待子协程完成。
+ */
+fun test15() {
+    runBlocking {
+        repeat(3) { i ->
+            launch {
+                delay((i + 1) * 200L)
+                log("Coroutine $i is done")
+            }
+        }
+        log("request: I'm done and I don't explicitly join my children that are still active")
+    }
+}
+
+/**
+ * 在极少数情况下我们需要在取消的协程中再调用挂起函数，此时可以使用 withContext 函数和
+ * NonCancellable上下文将相应的代码包装在 withContext(NonCancellable) {...} 代码块中，
+ * NonCancellable 就用于创建一个无法取消的协程作用域
+ */
+fun test14() {
+    runBlocking {
+        log("start")
+        val launchA = launch {
+            try {
+                repeat(5) {
+                    delay(50)
+                    log("launchA-$it")
+                }
+            } finally {
+                delay(50)
+                log("launchA isCompleted")
+            }
+        }
+        val launchB = launch {
+            try {
+                repeat(5) {
+                    delay(50)
+                    log("launchB-$it")
+                }
+            } finally {
+                withContext(NonCancellable) {
+                    delay(50)
+                    log("launchB isCompleted")
+                }
+            }
+        }
+        //延时一百毫秒，保证两个协程都已经被启动了
+        delay(200)
+        launchA.cancel()
+        launchB.cancel()
+        log("end")
+    }
+}
+
+/**
+ * 可取消的挂起函数在取消时会抛出 CancellationException，
+ * 可以依靠try {...} finally {...} 或者 Kotlin 的 use 函数在取消协程后释放持有的资源。
+ */
+fun test13() {
+    runBlocking {
+        val job = launch {
+            try {
+                repeat(1000) { i ->
+                    log("job: I'm sleeping $i ...")
+                    delay(500L)
+                }
+            } catch (e: Throwable) {
+                log(e.message)
+            } finally {
+                log("job: I'm running finally")
+            }
+        }
+        delay(1300L)
+        log("main: I'm tired of waiting!")
+        job.cancelAndJoin()
+        log("main: Now I can quit.")
+    }
+}
+
+fun test12() {
+    runBlocking {
+        val startTime = System.currentTimeMillis()
+        val job = launch(Dispatchers.Default) {
+            var nextPrintTime = startTime
+            var i = 0
+            while (i < 5) {
+                if (isActive) {
+                    if (System.currentTimeMillis() >= nextPrintTime) {
+                        log("job: I'm sleeping ${i++} ...")
+                        nextPrintTime += 500L
+                    }
+                } else {
+                    return@launch
+                }
+            }
+        }
+        delay(1300L)
+        log("main: I'm tired of waiting!")
+        job.cancelAndJoin()
+        log("main: Now I can quit.")
+    }
+}
+
+/**
+ * 取消协程
+ * cancel()
+ * join()
+ * cancelAndJoin()
+ */
+fun test11() {
+    runBlocking {
+        val job = launch {
+            repeat(50) { i ->
+                log("job: I`m sleeping $i ...")
+                delay(500L)
+            }
+        }
+        delay(2300L)
+        log("main: I'm tired of waiting!")
+        job.cancel()
+//        job.join()
+//        job.cancelAndJoin()
+        log("main: Now I can quit.")
+    }
+}
+
+/**
+ * CoroutineName 用于为协程指定一个名字，方便调试和定位问题
+ */
+fun test10() {
+    runBlocking<Unit>(CoroutineName("RunBlocking")) {
+        log("start")
+        launch(CoroutineName("MainCoroutine")) {
+            launch(CoroutineName("Coroutine#A")) {
+                delay(400)
+                log("launch A")
+            }
+            launch(CoroutineName("Coroutine#B")) {
+                delay(300)
+                log("launch B")
+            }
+        }
+    }
+}
+
+/**
+ * CoroutineContext 包含一个 CoroutineDispatcher（协程调度器）用于指定执行协程的目标载体，即 运行于哪个线程。
+ * Dispatchers.Default。默认调度器，适合用于执行占用大量 CPU 资源的任务。例如：对列表排序和解析 JSON
+ * Dispatchers.IO。适合用于执行磁盘或网络 I/O 的任务。例如：使用 Room 组件、读写磁盘文件，执行网络请求
+ * Dispatchers.Unconfined。对执行协程的线程不做限制，可以直接在当前调度器所在线程上执行
+ * Dispatchers.Main。使用此调度程序可用于在 Android 主线程上运行协程，只能用于与界面交互和执行快速工作，
+ *                  例如：更新 UI、调用 LiveData.setValue
+ */
+private fun test9() {
+    runBlocking<Unit> {
+        launch {
+            log("main runBlocking")
+        }
+        launch(Dispatchers.Default) {
+            log("default")
+            launch(Dispatchers.Unconfined) {
+                log("Unconfined 1")
+            }
+        }
+        launch(Dispatchers.IO) {
+            log("IO")
+            launch(Dispatchers.Unconfined) {}
+            log("Unconfined 2")
+        }
+        launch(newSingleThreadContext("MyOwnThread")) {
+            log("newSingleThreadContext")
+            launch(Dispatchers.Unconfined) {
+                log("Unconfined 4")
+            }
+        }
+        launch(Dispatchers.Unconfined) {
+            log("Unconfined 3")
+        }
+        GlobalScope.launch {
+            log("GlobalScope")
+        }
+    }
+}
+
+val job = Job()
+val scope = CoroutineScope(job + Dispatchers.IO)
+
+private fun test8(): Unit = runBlocking {
+    log("job is $job")
+    val job = scope.launch {
+        try {
+            delay(3000)
+        } catch (e: CancellationException) {
+            log("job is canceled")
+            throw e
+        }
+        log("end")
+    }
+    delay(1000)
+    log("scope job is ${scope.coroutineContext[Job]}")
+    scope.coroutineContext[Job]?.cancel()
+}
+
+suspend fun fetchTwoDocs() = coroutineScope {
+    val deferredOne = async {
+        delay(2000)
+        fetchDoc(1)
+    }
+    val deferredTwo = async {
+        delay(3000)
+        fetchDoc(2)
+    }
+    val await1 = deferredOne.await()
+    val await2 = deferredTwo.await()
+    await1 + await2
+}
+
+fun fetchDoc(i: Int): String {
+    return "接口 $i 返回的数据"
+}
+
+/**
+ * await 获取结果
+ * CoroutineStart.LAZY 不会主动启动协程，而是直到调用async.await()或者async.satrt()后才会启动（即懒加载模式）
+ */
 private fun test7() {
     val time = measureTimeMillis {
         runBlocking {
-            val asyncA = async {
+            val asyncA = async(start = CoroutineStart.LAZY) {
                 delay(3000)
                 1
             }
-            val asyncB = async {
+            val asyncB = async(start = CoroutineStart.LAZY) {
                 delay(4000)
                 2
             }
+//            asyncA.start()
+//            asyncB.start()
             log(asyncA.await() + asyncB.await())
         }
     }
