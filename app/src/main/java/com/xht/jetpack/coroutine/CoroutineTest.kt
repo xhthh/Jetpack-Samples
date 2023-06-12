@@ -1,6 +1,7 @@
 package com.xht.jetpack.coroutine
 
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
@@ -8,12 +9,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.runBlocking
@@ -41,8 +44,66 @@ fun main() {
     //test13()
     //test14()
     //test15()
-    test16()
+    //test16()
+    //test17()
+    test18()
 
+}
+
+/**
+ * 可以使用 SupervisorJob 来实现上述效果，取消操作只会向下传播，一个子协程的运行失败不会影响到同级协程和父协程
+ * 例如，以下示例中 firstChild 抛出的异常不会导致 secondChild 被取消，但当 supervisor 被取消时 secondChild 也被同时取消了
+ *
+ * 但是，如果异常没有被处理且 CoroutineContext 没有包含一个 CoroutineExceptionHandler 的话，异常会到达默认线程的 ExceptionHandler。
+ * 在 JVM 中，异常会被打印在控制台；而在 Android 中，无论异常在那个 Dispatcher 中发生，都会直接导致应用崩溃。
+ * 所以如果上述例子中移除了 firstChild 包含的 CoroutineExceptionHandler 的话，就会导致 Android 应用崩溃。
+ */
+fun test18() {
+    runBlocking {
+        val supervisorJob = SupervisorJob()
+        with(CoroutineScope(coroutineContext + supervisorJob)) {
+            val firstChild = launch(CoroutineExceptionHandler { _, _ -> }) {
+                log("First child is failing")
+                throw AssertionError("First child is cancelled")
+            }
+            val secondChild = launch {
+                firstChild.join()
+                log("First child is cancelled: ${firstChild.isCancelled}, but second one is still active")
+                try {
+                    delay(Long.MAX_VALUE)
+                } finally {
+                    log("Second child is cancelled because supervisor is cancelled")
+                }
+            }
+            firstChild.join()
+            log("Cancelling supervisor")
+            //取消所有协程
+            supervisorJob.cancel()
+            secondChild.join()
+        }
+    }
+}
+
+/**
+ * 如果想主动捕获异常信息，可以使用 CoroutineExceptionHandler 作为协程的上下文元素之一，在这里进行自定义日志记录或异常处理，
+ * 它类似于对线程使用 Thread.uncaughtExceptionHandler。但是，CoroutineExceptionHandler 只会在预计不会由用户处理的异常上调用，
+ * 因此在 async 中使用它没有任何效果，当 async 内部发生了异常且没有捕获时，那么调用 async.await() 依然会导致应用崩溃。
+ * 以下代码只会捕获到 launch 抛出的异常
+ */
+fun test17() {
+    runBlocking {
+        val handler = CoroutineExceptionHandler { _, exception ->
+            log("Caught $exception")
+        }
+        val job = GlobalScope.launch(handler) {
+            throw AssertionError()
+        }
+
+        val deferred = GlobalScope.async(handler) {
+            throw ArithmeticException()
+        }
+        joinAll(job, deferred)
+    }
 }
 
 /**

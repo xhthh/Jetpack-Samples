@@ -36,7 +36,8 @@ class OneFragment : Fragment() {
 //            SharedViewModel.SharedViewModelFactory("")
 //        ).get(SharedViewModel::class.java)
         bt_fragment_one.setOnClickListener {
-            model.sharedName.value = "星矢"
+            //model.sharedName.value = "星矢"
+            model.getData()
 
             val result = model.sharedName.value
             setFragmentResult("requestKey", bundleOf("bundleKey" to result))
