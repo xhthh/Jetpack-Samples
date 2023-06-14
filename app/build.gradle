@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    compileSdk 30
+    compileSdk 31
 
     defaultConfig {
         applicationId "com.xht.jetpack"
@@ -55,4 +55,5 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
     //implementation 'com.yanzhenjie:permission:2.0.3'
 
+    implementation "androidx.room:room-ktx:2.4.0"
 }

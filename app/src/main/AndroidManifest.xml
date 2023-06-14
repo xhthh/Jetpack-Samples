@@ -29,6 +29,7 @@
         <activity android:name=".viewmodule.VMTestActivity" />
         <activity android:name=".databinding.ui.UserListActivity" />
         <activity android:name=".coroutine.CoroutineTestActivity" />
+        <activity android:name=".room.RoomTestActivity" />
     </application>
 
 </manifest>
