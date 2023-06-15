@@ -9,10 +9,13 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
-    @Query("SELECT * FROM user")
+    @Query("delete from USER")
+    fun deleteAll()
+
+    @Query("SELECT * FROM USER")
     fun getAll(): List<User>
 
-    @Query("SELECT * FROM user WHERE id = :id")
+    @Query("SELECT * FROM USER WHERE id = :id")
     fun getById(id: Int): User?
 
     @Insert

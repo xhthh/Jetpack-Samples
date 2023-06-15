@@ -1,7 +1,6 @@
 package com.xht.jetpack.room
 
 import android.content.Context
-import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -27,19 +26,4 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
     }
-}
-
-
-/**
- * 数据库迁移
- */
-@Database(
-    entities = [User::class],
-    version = 2,
-    exportSchema = false,
-    autoMigrations = [
-        AutoMigration(from = 1, to = 2)
-    ]
-)
-abstract class Database : RoomDatabase() {
 }

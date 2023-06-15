@@ -5,12 +5,15 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-@Entity
-data class User(
+@Entity(
+    tableName = "USER"
+)
+open class User(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "email") var email: String,
 )
+
 
 @Entity(
     tableName = "addresses",
