@@ -48,6 +48,9 @@ class MainActivity : AppCompatActivity() {
 
         //Room测试
         btnRoom.setOnClickListener {
+            RoomTestActivity.syncOptionalGroupSize {
+                println("返回结果 $it")
+            }
             skip2Activity(RoomTestActivity::class.java)
         }
     }

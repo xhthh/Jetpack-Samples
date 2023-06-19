@@ -39,4 +39,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="删除表" />
+
+    <Button
+        android:id="@+id/btnGetFromLocal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="从本地db获取数据" />
 </LinearLayout>
